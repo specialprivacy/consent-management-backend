@@ -1,5 +1,7 @@
 # Consent Management Backend
-This is the backend component for the consent management service in the SPECIAL architecture.
+
+## Description
+This is the backend component (hosted on Docker) for the consent management service in the SPECIAL architecture.
 It is responsible for CRUD operations of both data subject and data controller policies.
 
 It takes care of validating the inputs before writing them into rethinkdb.
@@ -10,7 +12,7 @@ It also emits 2 streams of data for downstream consumption:
 
 The CI configuration takes care of testing the code and automatically building properly tagged docker images for deployment.
 
-## Options
+## Configuration
 All options are specified as environment variables for the nodejs process
 * **LOGGING_LEVEL**: The verbosity of the logs. oneOf: [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] (_default_: `info`)
 * **SERVER_HOST**: The hostname of the server (_default_: `localhost`)
@@ -31,25 +33,3 @@ All options are specified as environment variables for the nodejs process
 * **AUTH_LOGIN_ENDPOINT**: The authentication URL of your OAUTH server (_default_: `http://localhost:8080/auth/realms/master/protocol/openid-connect/auth`)
 * **AUTH_TOKEN_ENDPOINT**: The token URL of your OAUTH server (_default_: `http://localhost:8080/auth/realms/master/protocol/openid-connect/token`)
 * **AUTH_USERINFO_ENDPOINT**: The token URL of your OAUTH server (_default_: `http://localhost:8080/auth/realms/master/protocol/openid-connect/userinfo`)
-
-## Build
-TODO: Add build instructions for local and docker based development
-
-## TODO
-1. Flesh out README
-1. Clean up the code (too much stuff in server.js)
-    * Move triggers to module
-    * Move oauth middleware to lib
-1. Add support for kafka SSL
-1. Add support for kafka access management
-1. Restructure API
-1. Reuse database connections (typically expensive to create, current behaviour will cause problems under load)
-    * Base lib doesn't have connection pool, check other possibilities
-1. Centralise access to rethink so we only have to implement error handling and backoff once
-1. Centralise access to kafka so we only have to implement error handling and backoff once
-1. Rename git repo
-1. Use something else than Memory Store for sessions
-1. Use "secure" in express-session (need HTTPS though)
-1. List all possible ENV
-1. Add logout (frontend should redirect to logout url, authentication service should then redirect to here on /logout, where the session would be cleared)
-1. Access token should be checked on every call to ensure it's still valid. If it's not, try to use refresh token, if outdated too, clear session then login again.
